@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form onsubmit="sendMessage();return false">
+    <input type="text" id="message" />
+    <input type="submit" value="Send"/>
+  </form>
+  
+  <script>
+    const socket = new WebSocket("ws://localhost:3002?username=kaspis.kaspis")
+
+    socket.onopen = () => {
+      console.log("Successfully connected");
+    };
+
+    socket.onclose = (event) => {
+      console.log("Socket closed connection: ", event)
+    }
+
+    socket.onerror = (error) => {
+      console.log("Socket Error: ", error)
+    }
+
+    socket.onmessage = (mess) => {
+      console.log("Received new message: ", mess)
+    }
+
+    const sendMessage = () => {
+      const mess = document.getElementById("message").value
+      socket.send(mess)
+      document.getElementById("message").value = ""
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+
+  chat_server:
+    build: .
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - "connections_db"
+
+  connections_db:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --requirepass ${CONNECTIONS_DB_PASS}
+    # volumes:
+    #   - cache:/data
